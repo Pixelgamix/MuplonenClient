@@ -14,7 +14,7 @@ __meta__ = {
 
 [node name="Panel" type="Panel" parent="."]
 margin_right = 320.0
-margin_bottom = 120.0
+margin_bottom = 160.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -52,10 +52,29 @@ __meta__ = {
 [node name="ButtonLogin" type="Button" parent="Panel"]
 margin_left = 16.0
 margin_top = 80.0
-margin_right = 304.0
+margin_right = 192.0
 margin_bottom = 104.0
 text = "Login"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ButtonRegister" type="Button" parent="Panel"]
+margin_left = 200.0
+margin_top = 80.0
+margin_right = 304.0
+margin_bottom = 104.0
+text = "Register"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelResult" type="Label" parent="Panel"]
+margin_left = 16.0
+margin_top = 112.0
+margin_right = 304.0
+margin_bottom = 136.0
+text = "Log into an existing account or register a new one"
+autowrap = true
 [connection signal="pressed" from="Panel/ButtonLogin" to="." method="_on_ButtonLogin_pressed"]
+[connection signal="pressed" from="Panel/ButtonRegister" to="." method="_on_ButtonRegister_pressed"]

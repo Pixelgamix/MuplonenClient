@@ -19,6 +19,10 @@ config/name="Muplonen Client"
 run/main_scene="res://Dialogs/LoginDialog.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+MuplonenNetwork="*res://Network/MuplonenNetwork.gd"
+
 [display]
 
 window/size/width=640

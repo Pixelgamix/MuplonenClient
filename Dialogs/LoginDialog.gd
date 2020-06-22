@@ -1,39 +1,49 @@
 extends Control
 
+onready var _result_label:Label = $Panel/LabelResult
+onready var _muplonen_network = get_node("/root/MuplonenNetwork")
 
-export var websocket_url:String = "ws://localhost:5000/ws"
+var _function_to_execute_after_connect: String = ""
 
-var _client:WebSocketClient = WebSocketClient.new()
-var _read_buffer:StreamPeerBuffer = StreamPeerBuffer.new()
-var _write_buffer:StreamPeerBuffer = StreamPeerBuffer.new()
+func _ready() -> void:
+	_muplonen_network.register_message_callback(1, funcref(self, "_registration_reply_received"))
+	_muplonen_network.register_message_callback(2, funcref(self, "_login_reply_received"))
 
-func _ready():
-	_client.connect("connection_closed", self, "_closed")
-	_client.connect("connection_error", self, "_closed")
-	_client.connect("connection_established", self, "_connected")
-	_client.connect("data_received", self, "_on_data")
-	var err = _client.connect_to_url(websocket_url)
-	if err != OK:
-		print("Unable to connect")
-		set_process(false)
+func _process(delta: float) -> void:
+	if _muplonen_network.is_connected_to_server() && _function_to_execute_after_connect != "":
+		call(_function_to_execute_after_connect)
+		_function_to_execute_after_connect = ""
 
-func _closed(was_clean:bool = false):
-	print("Closed, clean: ", was_clean)
-	set_process(false)
-
-func _connected(proto:String = ""):
-	print("Connected with protocol: ", proto)
+func _registration_reply_received(buffer: StreamPeerBuffer) -> void:
+	var success = buffer.get_u8()
+	if success == 0:
+		_result_label.add_color_override("font_color",Color.red)
+	else:
+		_result_label.add_color_override("font_color",Color.green)
+	var text = buffer.get_string()
+	_result_label.text = text
 	
-func _on_data():
-	_read_buffer.data_array = _client.get_peer(1).get_packet()
-	print("Got data from server: ", _read_buffer.get_string())
+func _login_reply_received(buffer: StreamPeerBuffer) -> void:
+	var success = buffer.get_u8()
+	var text = buffer.get_string()
+	if success == 0:
+		_result_label.add_color_override("font_color",Color.red)
+		_result_label.text = text
+	else:
+		_result_label.add_color_override("font_color",Color.green)
+		_result_label.text = "Login successfull!"
+		_muplonen_network.disconnect_from_server()
 
-func _process(delta):
-	_client.poll()
+func _on_ButtonLogin_pressed() -> void:
+	_muplonen_network.connect_to_server()
+	_function_to_execute_after_connect = "do_login"
 
-func _on_ButtonLogin_pressed():
-	_write_buffer.clear()
-	_write_buffer.put_u16(1)
-	_write_buffer.put_string($Panel/LineEditUsername.text)
-	_write_buffer.put_string($Panel/LineEditPassword.text)
-	_client.get_peer(1).put_packet( _write_buffer.data_array )
+func _on_ButtonRegister_pressed() -> void:
+	_muplonen_network.connect_to_server()
+	_function_to_execute_after_connect = "do_register"
+
+func do_login() -> void:
+	_muplonen_network.send_account_login_message($Panel/LineEditUsername.text,$Panel/LineEditPassword.text)
+
+func do_register() -> void:
+	_muplonen_network.send_account_registration_message($Panel/LineEditUsername.text,$Panel/LineEditPassword.text)
