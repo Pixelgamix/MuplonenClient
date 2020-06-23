@@ -8,20 +8,47 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "VBoxContainer",
+"class": "Chatbox",
+"language": "GDScript",
+"path": "res://UI/Elements/Chat/Chatbox.gd"
+}, {
+"base": "HBoxContainer",
+"class": "Chatinput",
+"language": "GDScript",
+"path": "res://UI/Elements/Chat/Chatinput.gd"
+}, {
+"base": "ScrollContainer",
+"class": "Chatviewer",
+"language": "GDScript",
+"path": "res://UI/Elements/Chat/Chatviewer.gd"
+}, {
+"base": "Control",
+"class": "LoginDialog",
+"language": "GDScript",
+"path": "res://UI/Dialogs/LoginDialog.gd"
+} ]
 _global_script_class_icons={
-
+"Chatbox": "",
+"Chatinput": "",
+"Chatviewer": "",
+"LoginDialog": ""
 }
 
 [application]
 
 config/name="Muplonen Client"
-run/main_scene="res://Dialogs/LoginDialog.tscn"
+run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 MuplonenNetwork="*res://Network/MuplonenNetwork.gd"
+
+[debug]
+
+gdscript/warnings/return_value_discarded=false
 
 [display]
 

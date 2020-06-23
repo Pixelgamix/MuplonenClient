@@ -1,19 +1,37 @@
 extends Control
+class_name LoginDialog
 
+#
+# Private members
+#
 onready var _result_label:Label = $Panel/LabelResult
-onready var _muplonen_network = get_node("/root/MuplonenNetwork")
-
+onready var _muplonen_network:MuplonenNetwork = get_node("/root/MuplonenNetwork")
 var _function_to_execute_after_connect: String = ""
 
+#
+# Signals
+#
+signal logged_in
+
+#
+# Engine
+#
 func _ready() -> void:
 	_muplonen_network.register_message_callback(1, funcref(self, "_registration_reply_received"))
 	_muplonen_network.register_message_callback(2, funcref(self, "_login_reply_received"))
+	
+func _exit_tree() -> void:
+	_muplonen_network.unregister_message_callback(1)
+	_muplonen_network.unregister_message_callback(2)
 
 func _process(delta: float) -> void:
 	if _muplonen_network.is_connected_to_server() && _function_to_execute_after_connect != "":
 		call(_function_to_execute_after_connect)
 		_function_to_execute_after_connect = ""
 
+#
+# Private methods
+#
 func _registration_reply_received(buffer: StreamPeerBuffer) -> void:
 	var success = buffer.get_u8()
 	if success == 0:
@@ -32,9 +50,13 @@ func _login_reply_received(buffer: StreamPeerBuffer) -> void:
 	else:
 		_result_label.add_color_override("font_color",Color.green)
 		_result_label.text = "Login successfull!"
-		_muplonen_network.disconnect_from_server()
+		emit_signal("logged_in")
 
 func _on_ButtonLogin_pressed() -> void:
+	_muplonen_network.connect_to_server()
+	_function_to_execute_after_connect = "do_login"
+
+func _on_LineEditPassword_text_entered(new_text):
 	_muplonen_network.connect_to_server()
 	_function_to_execute_after_connect = "do_login"
 
