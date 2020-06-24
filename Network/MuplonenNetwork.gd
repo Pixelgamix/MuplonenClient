@@ -95,3 +95,20 @@ func send_chat_message(message:String) -> void:
 	_write_buffer.put_u16(3)
 	_write_buffer.put_string(message)
 	_client.get_peer(1).put_packet(_write_buffer.data_array)
+
+func send_character_list_request() -> void:
+	_write_buffer.clear()
+	_write_buffer.put_u16(4)
+	_client.get_peer(1).put_packet(_write_buffer.data_array)
+
+func send_character_creation_request(charactername:String) -> void:
+	_write_buffer.clear()
+	_write_buffer.put_u16(5)
+	_write_buffer.put_string(charactername)
+	_client.get_peer(1).put_packet(_write_buffer.data_array)
+
+func send_character_selection_request(charactername:String) -> void:
+	_write_buffer.clear()
+	_write_buffer.put_u16(6)
+	_write_buffer.put_string(charactername)
+	_client.get_peer(1).put_packet(_write_buffer.data_array)

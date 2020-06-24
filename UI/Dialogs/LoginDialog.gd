@@ -1,5 +1,4 @@
 extends Control
-class_name LoginDialog
 
 #
 # Private members
@@ -30,7 +29,7 @@ func _process(delta: float) -> void:
 		_function_to_execute_after_connect = ""
 
 #
-# Private methods
+# Callbacks
 #
 func _registration_reply_received(buffer: StreamPeerBuffer) -> void:
 	var success = buffer.get_u8()
@@ -64,6 +63,9 @@ func _on_ButtonRegister_pressed() -> void:
 	_muplonen_network.connect_to_server()
 	_function_to_execute_after_connect = "do_register"
 
+#
+# Private methods
+#
 func do_login() -> void:
 	_muplonen_network.send_account_login_message($Panel/LineEditUsername.text,$Panel/LineEditPassword.text)
 

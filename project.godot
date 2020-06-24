@@ -23,23 +23,17 @@ _global_script_classes=[ {
 "class": "Chatviewer",
 "language": "GDScript",
 "path": "res://UI/Elements/Chat/Chatviewer.gd"
-}, {
-"base": "Control",
-"class": "LoginDialog",
-"language": "GDScript",
-"path": "res://UI/Dialogs/LoginDialog.gd"
 } ]
 _global_script_class_icons={
 "Chatbox": "",
 "Chatinput": "",
-"Chatviewer": "",
-"LoginDialog": ""
+"Chatviewer": ""
 }
 
 [application]
 
 config/name="Muplonen Client"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://Screens/LoginScreen.tscn"
 config/icon="res://icon.png"
 
 [autoload]

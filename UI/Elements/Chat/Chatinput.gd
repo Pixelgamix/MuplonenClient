@@ -10,6 +10,7 @@ func _emit_chat_signal(message: String) -> void:
 
 func _on_ButtonSend_pressed() -> void:
 	_emit_chat_signal(_line_edit.text)
+	_line_edit.text = ""
 
 func _on_LineEdit_text_entered(new_text):
 	_emit_chat_signal(_line_edit.text)
