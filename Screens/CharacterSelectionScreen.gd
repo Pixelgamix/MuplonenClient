@@ -27,8 +27,7 @@ func _on_connection_closed() -> void:
 	queue_free()
 
 func _on_character_selected(charactername:String) -> void:
-	# TODO
-	var game_ui = load("res://UI/GameUi.tscn").instance()
+	var game_ui = load("res://Screens/GameScreen.tscn").instance()
 	var parent = get_parent()
 	parent.remove_child(self)
 	parent.add_child(game_ui)

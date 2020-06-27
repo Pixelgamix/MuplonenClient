@@ -12,6 +12,7 @@ var _read_buffer:StreamPeerBuffer = StreamPeerBuffer.new()
 var _write_buffer:StreamPeerBuffer = StreamPeerBuffer.new()
 var _message_registrations = {}
 var _time_since_last_msg = 0
+var _ping_sent:bool = false
 
 #
 # Signals
@@ -33,6 +34,9 @@ func _exit_tree() -> void:
 func _process(delta: float) -> void:
 	_client.poll()
 	_time_since_last_msg += delta
+	if _time_since_last_msg > timeout * 0.5 && !_ping_sent && is_connected_to_server():
+		_ping_sent = true
+		send_ping_request()
 	if _time_since_last_msg > timeout:
 		_time_since_last_msg = 0
 		disconnect_from_server()
@@ -51,16 +55,18 @@ func _connected(proto:String = "") -> void:
 	
 func _on_data() -> void:
 	_time_since_last_msg = 0
+	_ping_sent = false
 	_read_buffer.data_array = _client.get_peer(1).get_packet()
 	var message_id = _read_buffer.get_u16()
-	var callback = _message_registrations[message_id]
-	callback.call_func(_read_buffer)
+	if _message_registrations.has(message_id):
+		var callback = _message_registrations[message_id]
+		callback.call_func(_read_buffer)
 
 #
 # Public methods
 #
 func is_connected_to_server() -> bool:
-	return _client.get_connection_status() == 2
+	return _client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED
 
 func connect_to_server() -> void:
 	_client.disconnect_from_host()
@@ -111,4 +117,17 @@ func send_character_selection_request(charactername:String) -> void:
 	_write_buffer.clear()
 	_write_buffer.put_u16(6)
 	_write_buffer.put_string(charactername)
+	_client.get_peer(1).put_packet(_write_buffer.data_array)
+
+func send_ping_request() -> void:
+	_write_buffer.clear()
+	_write_buffer.put_u16(7)
+	_client.get_peer(1).put_packet(_write_buffer.data_array)
+
+func send_player_move(position:Vector3) -> void:
+	_write_buffer.clear()
+	_write_buffer.put_u16(8);
+	_write_buffer.put_16(position.x)
+	_write_buffer.put_16(position.y)
+	_write_buffer.put_16(position.z)
 	_client.get_peer(1).put_packet(_write_buffer.data_array)
