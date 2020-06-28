@@ -51,12 +51,17 @@ margin_left = 96.0
 margin_top = 16.0
 margin_right = 304.0
 margin_bottom = 40.0
+max_length = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="LineEditPassword" type="LineEdit" parent="Panel"]
 margin_left = 96.0
 margin_top = 48.0
 margin_right = 304.0
 margin_bottom = 72.0
+max_length = 48
 secret = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -67,6 +72,7 @@ margin_left = 16.0
 margin_top = 80.0
 margin_right = 192.0
 margin_bottom = 104.0
+disabled = true
 text = "Login"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -77,6 +83,7 @@ margin_left = 200.0
 margin_top = 80.0
 margin_right = 304.0
 margin_bottom = 104.0
+disabled = true
 text = "Register"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -89,6 +96,8 @@ margin_right = 304.0
 margin_bottom = 136.0
 text = "Log into an existing account or register a new one"
 autowrap = true
+[connection signal="text_changed" from="Panel/LineEditUsername" to="." method="_on_LineEditUsername_text_changed"]
+[connection signal="text_changed" from="Panel/LineEditPassword" to="." method="_on_LineEditPassword_text_changed"]
 [connection signal="text_entered" from="Panel/LineEditPassword" to="." method="_on_LineEditPassword_text_entered"]
 [connection signal="pressed" from="Panel/ButtonLogin" to="." method="_on_ButtonLogin_pressed"]
 [connection signal="pressed" from="Panel/ButtonRegister" to="." method="_on_ButtonRegister_pressed"]

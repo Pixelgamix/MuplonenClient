@@ -27,10 +27,11 @@ func _on_connection_closed() -> void:
 	queue_free()
 
 func _on_character_selected(charactername:String) -> void:
-	var game_ui = load("res://Screens/GameScreen.tscn").instance()
+	var game_screen = load("res://Screens/GameScreen.tscn").instance()
 	var parent = get_parent()
 	parent.remove_child(self)
-	parent.add_child(game_ui)
+	parent.add_child(game_screen)
+	game_screen.spawn_local_player(charactername)
 	queue_free()
 
 func _on_character_creation() -> void:

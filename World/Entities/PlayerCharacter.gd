@@ -1,4 +1,5 @@
 extends Spatial
+class_name PlayerCharacter
 
 onready var _muplonen_network:MuplonenNetwork = get_node("/root/MuplonenNetwork")
 

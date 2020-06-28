@@ -41,12 +41,17 @@ margin_left = 120.0
 margin_top = 16.0
 margin_right = 304.0
 margin_bottom = 40.0
+max_length = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ButtonCreate" type="Button" parent="Panel"]
 margin_left = 16.0
 margin_top = 48.0
 margin_right = 224.0
 margin_bottom = 72.0
+disabled = true
 text = "Create character"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -68,5 +73,6 @@ text = "Enter a name for your new character."
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="text_changed" from="Panel/LineEditCharactername" to="." method="_on_LineEditCharactername_text_changed"]
 [connection signal="pressed" from="Panel/ButtonCreate" to="." method="_on_ButtonCreate_pressed"]
 [connection signal="pressed" from="Panel/ButtonBack" to="." method="_on_ButtonBack_pressed"]

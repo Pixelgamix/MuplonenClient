@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "Chatviewer",
 "language": "GDScript",
 "path": "res://UI/Elements/Chat/Chatviewer.gd"
+}, {
+"base": "Spatial",
+"class": "PlayerCharacter",
+"language": "GDScript",
+"path": "res://World/Entities/PlayerCharacter.gd"
 } ]
 _global_script_class_icons={
 "Chatbox": "",
 "Chatinput": "",
-"Chatviewer": ""
+"Chatviewer": "",
+"PlayerCharacter": ""
 }
 
 [application]

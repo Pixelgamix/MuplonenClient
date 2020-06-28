@@ -18,6 +18,7 @@ margin_right = 273.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 align = 3
+max_length = 255
 caret_blink = true
 caret_blink_speed = 0.5
 __meta__ = {
@@ -28,6 +29,8 @@ __meta__ = {
 margin_left = 277.0
 margin_right = 320.0
 margin_bottom = 32.0
+disabled = true
 text = "Send"
+[connection signal="text_changed" from="LineEdit" to="." method="_on_LineEdit_text_changed"]
 [connection signal="text_entered" from="LineEdit" to="." method="_on_LineEdit_text_entered"]
 [connection signal="pressed" from="ButtonSend" to="." method="_on_ButtonSend_pressed"]

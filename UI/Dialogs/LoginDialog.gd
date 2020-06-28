@@ -4,6 +4,10 @@ extends Control
 # Private members
 #
 onready var _result_label:Label = $Panel/LabelResult
+onready var _login_button:Button = $Panel/ButtonLogin
+onready var _register_button:Button = $Panel/ButtonRegister
+onready var _login_lineedit:LineEdit = $Panel/LineEditUsername
+onready var _password_lineedit:LineEdit = $Panel/LineEditPassword
 onready var _muplonen_network:MuplonenNetwork = get_node("/root/MuplonenNetwork")
 var _function_to_execute_after_connect: String = ""
 
@@ -63,11 +67,19 @@ func _on_ButtonRegister_pressed() -> void:
 	_muplonen_network.connect_to_server()
 	_function_to_execute_after_connect = "do_register"
 
+func _on_LineEditUsername_text_changed(new_text:String) -> void:
+	_login_button.disabled = new_text.strip_edges().length() < 3 || _password_lineedit.text.length() < 3
+	_register_button.disabled = new_text.strip_edges().length() < 3 || _password_lineedit.text.length() < 3
+	
+func _on_LineEditPassword_text_changed(new_text:String) -> void:
+	_login_button.disabled = new_text.strip_edges().length() < 3 || _password_lineedit.text.length() < 3
+	_register_button.disabled = new_text.strip_edges().length() < 3 || _password_lineedit.text.length() < 3
+
 #
 # Private methods
 #
 func do_login() -> void:
-	_muplonen_network.send_account_login_message($Panel/LineEditUsername.text,$Panel/LineEditPassword.text)
+	_muplonen_network.send_account_login_message(_login_lineedit.text.strip_edges(),_password_lineedit.text)
 
 func do_register() -> void:
-	_muplonen_network.send_account_registration_message($Panel/LineEditUsername.text,$Panel/LineEditPassword.text)
+	_muplonen_network.send_account_registration_message(_login_lineedit.text.strip_edges(),_password_lineedit.text)
